@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>URL Shortener</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+        }
+
+        .result-box {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 class="mb-4">URL Shortener</h2>
+
+    <form id="urlForm" th:action="@{/api/v1/data/shorten}" method="post">
+        <div class="mb-3">
+            <label for="longUrl" class="form-label">긴 URL 입력</label>
+            <input type="url" class="form-control" id="longUrl" name="longUrl" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="converterType" class="form-label">변환 방식 선택</label>
+            <select class="form-select" id="converterType" name="converterType">
+                <option value="BASE62">Base62</option>
+                <option value="SHA256">SHA-256</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">URL 단축하기</button>
+    </form>
+
+    <div id="resultBox" class="result-box">
+        <h4>단축된 URL:</h4>
+        <div class="input-group mb-3">
+            <input type="text" id="shortUrl" class="form-control" readonly>
+            <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard()">복사</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('urlForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = {
+            longUrl: document.getElementById('longUrl').value,
+            // type: document.getElementById('converterType').value
+        };
+
+        fetch(`/api/v1/data/shorten`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('shortUrl').value = window.location.origin + '/' + data.shortUrl;
+                document.getElementById('resultBox').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('URL 단축 중 오류가 발생했습니다.');
+            });
+    });
+
+    function copyToClipboard() {
+        const shortUrl = document.getElementById('shortUrl');
+        shortUrl.select();
+        document.execCommand('copy');
+        alert('URL이 클립보드에 복사되었습니다!');
+    }
+</script>
+</body>
+</html>
