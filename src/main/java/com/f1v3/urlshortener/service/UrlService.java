@@ -22,6 +22,7 @@ public class UrlService {
 
     @Transactional
     public ShortenResponse shortenUrl(ShortenRequest request) {
+
         String originalUrl = request.getOriginalUrl();
 
         if (urlRepository.existsByOriginalUrl(originalUrl)) {
@@ -29,15 +30,15 @@ public class UrlService {
             return new ShortenResponse(url.getShortUrl());
         }
 
-        long id = urlRepository.count() + 1;
-        String shortenUrl = conversion.encode(id);
-
         Url url = Url.builder()
                 .originalUrl(originalUrl)
-                .shortUrl(shortenUrl)
                 .build();
 
-        urlRepository.save(url);
+        Url savedUrl = urlRepository.save(url);
+
+        String shortenUrl = conversion.encode(savedUrl.getId());
+        savedUrl.setShortUrl(shortenUrl);
+        urlRepository.save(savedUrl);
 
         return new ShortenResponse(shortenUrl);
     }

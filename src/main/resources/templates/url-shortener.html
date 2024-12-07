@@ -24,8 +24,8 @@
 
     <form id="urlForm" th:action="@{/api/v1/data/shorten}" method="post">
         <div class="mb-3">
-            <label for="longUrl" class="form-label">긴 URL 입력</label>
-            <input type="url" class="form-control" id="longUrl" name="longUrl" required>
+            <label for="originalUrl" class="form-label">긴 URL 입력</label>
+            <input type="url" class="form-control" id="originalUrl" name="originalUrl" required>
         </div>
 
         <div class="mb-3">
@@ -53,7 +53,7 @@
         e.preventDefault();
 
         const formData = {
-            longUrl: document.getElementById('longUrl').value,
+            originalUrl: document.getElementById('originalUrl').value,
             // type: document.getElementById('converterType').value
         };
 

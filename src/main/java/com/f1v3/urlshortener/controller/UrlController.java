@@ -21,13 +21,14 @@ public class UrlController {
     @PostMapping("/api/v1/data/shorten")
     public ResponseEntity<ShortenResponse> createShortUrl(@RequestBody ShortenRequest request) {
 
+        System.out.println("===================");
         System.out.println(request.getOriginalUrl());
 
         ShortenResponse response = urlService.shortenUrl(request);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/api/v1/{shortUrl}")
+    @GetMapping("/{shortUrl}")
     public ResponseEntity<Void> redirectOriginalUrl(@PathVariable String shortUrl) {
         String originalUrl = urlService.getOriginalUrl(shortUrl);
 

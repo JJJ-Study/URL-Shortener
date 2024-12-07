@@ -25,12 +25,11 @@ public class Url {
     private String originalUrl;
 
     @Builder
-    public Url(String shortUrl, String originalUrl) {
-        this.shortUrl = shortUrl;
+    public Url(String originalUrl) {
         this.originalUrl = originalUrl;
     }
 
-    public void setShortUrl(String shortUrl) {
-        this.shortUrl = shortUrl;
+    public void setShortUrl(String shortenUrl) {
+        this.shortUrl = shortenUrl;
     }
 }
