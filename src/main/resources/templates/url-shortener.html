@@ -56,7 +56,7 @@
         })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('shortUrl').value = window.location.origin + '/' + data.shortUrl;
+                document.getElementById('shortUrl').value = window.location.origin + '/go/' + data.shortUrl;
                 document.getElementById('resultBox').style.display = 'block';
             })
             .catch(error => {

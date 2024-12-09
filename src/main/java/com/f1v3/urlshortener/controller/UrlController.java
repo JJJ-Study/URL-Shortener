@@ -30,14 +30,17 @@ public class UrlController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{shortUrl}")
+    @GetMapping("/go/{shortUrl}")
     public ResponseEntity<Void> redirectToOriginalUrl(@PathVariable String shortUrl) {
+
+        log.info("shortUrl : {}", shortUrl);
+
         String originalUrl = urlService.getOriginalUrl(shortUrl);
+
+        log.info("originalUrl : {}", originalUrl);
 
         return ResponseEntity.status(HttpStatus.FOUND)
                 .location(URI.create(originalUrl))
                 .build();
     }
-
-
 }
